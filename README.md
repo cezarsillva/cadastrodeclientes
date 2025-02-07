@@ -1,7 +1,7 @@
 Programa de cadastro de clientes em Python que salva os dados em .txt.
 
 1. Importa a biblioteca tkinter usada para criar interfaces gráficas.
-2. Atualiza o texto do label_mensagem, exibindo mensagens para o usuário em verde.
+2. Atualiza o texto do label_mensagem, exibindo mensagens padrão para o usuário em verde.
 3. Busca os dados nos campos usados para ecrever e verifica se o cpf e nome foram preenchidos, se foram preenchidos salva os dados no arquivo clientes.txt e limpa os campos se não, ele mostra uma mensagem de erro.
 4. O arquivo clientes.txt é aberto no modo "append" ("a"), adicionando novos clientes sem gravar emcima dos dados antigos.
 5. Exibe uma mensagem de sucesso ou erro.
