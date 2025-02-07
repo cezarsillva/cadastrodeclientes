@@ -1,9 +1,12 @@
-
+#1. Importa a biblioteca tkinter usada para criar interfaces gráficas.
 from tkinter import *
 
+#2. Atualiza o texto do label_mensagem, exibindo mensagens para o usuário em verde.
 def exibirmensagem(mensagem, cor="green"):
     label_mensagem.config(text=mensagem, fg=cor)
 
+#3. Busca os dados nos campos usados para ecrever e verifica se o cpf e nome foram preenchidos, se foram preenchidos salva os dados no arquivo clientes.txt
+# e limpa os campos se não, ele mostra uma mensagem de erro.
 def salvarcliente():
     cpf = entry_cpf.get()
     nome = entry_nome.get()
@@ -13,12 +16,21 @@ def salvarcliente():
     email = entry_email.get()
 
     if nome and cpf:
+
+#4. O arquivo clientes.txt é aberto no modo "append" ("a"), adicionando novos clientes sem gravar emcima dos dados antigos.
+
         with open("clientes.txt", "a") as arquivo:
             arquivo.write(f"CPF: {cpf}, Nome: {nome}, Endereço: {endereco}, Data de Nascimento: {datadenascimento}, Telefone: {telefone}, Email: {email}\n")
         limparcampos()
+
+#5. Exibe uma mensagem de sucesso ou erro.
+
         exibirmensagem("Cliente cadastrado com sucesso!", "green")
     else:
         exibirmensagem("Nome e CPF são obrigatórios!", "red")
+
+#6. Obtém o CPF digitado, se nenhum CPF for fornecido, exibe uma mensagem de erro pedindo pra digitar o cpf para exclusão. então ele lê todas as linhas do arquivo clientes.txt
+# e escreve de volta apenas as linhas que não contêm o CPF informado.
 
 def excluircliente():
     cpf = entry_cpf.get()
@@ -30,6 +42,8 @@ def excluircliente():
         with open("clientes.txt", "r") as arquivo:
             linhas = arquivo.readlines()
         
+#7. A variável clienteexcluido verifica se um cliente foi realmente removido e se foi removido mostra a mensagem excluido com sucesso ou não.
+
         with open("clientes.txt", "w") as arquivo:
             clienteexcluido = False
             for linha in linhas:
@@ -38,6 +52,7 @@ def excluircliente():
                 else:
                     clienteexcluido = True
 
+#8. Mensagem se foi excluido ou não os dados.
         if clienteexcluido:
             exibirmensagem(f"Cliente com CPF {cpf} excluído com sucesso!", "green")
             limparcampos()
@@ -46,16 +61,20 @@ def excluircliente():
     except FileNotFoundError:
         exibirmensagem("Arquivo de clientes não encontrado.", "red")
 
+#9. Verifica se o cpf foi digitado se não foi ele exibe uma mensagem pedindo pra digitar o cpf para atualização.
 def editarcliente():
     cpf = entry_cpf.get()
     if not cpf:
         exibirmensagem("Digite o CPF do cliente a ser editado.", "red")
         return
     
+
+#10. Tenta abrir o arquivo clientes.txt no modo leitura e tenta ler os dados.
     try:
         with open("clientes.txt", "r") as arquivo:
             linhas = arquivo.readlines()
-        
+
+#11. Abre o arquivo clientes.txt no modo de escrita apaga um arquivo e escreve outro.
         with open("clientes.txt", "w") as arquivo:
             cliente_editado = False
             for linha in linhas:
@@ -66,6 +85,7 @@ def editarcliente():
                 else:
                     arquivo.write(linha)
 
+#12. Exibe a mensagem se foi editado com sucesso ou não.
         if cliente_editado:
             exibirmensagem(f"Cliente com CPF {cpf} editado com sucesso!", "green")
             limparcampos()
@@ -74,6 +94,7 @@ def editarcliente():
     except FileNotFoundError:
         exibirmensagem("Arquivo de clientes não encontrado.", "red")
 
+#13. Limpa o campos de entrada de dados quando inseridos os dados.
 def limparcampos():
     entry_nome.delete(0, END)
     entry_cpf.delete(0, END)
@@ -82,18 +103,24 @@ def limparcampos():
     entry_telefone.delete(0, END)
     entry_email.delete(0, END)
 
-janela = Tk()
+#14. Cria uma janela.
+
+janela = Tk() 
 janela.title("Cadastro de Clientes")
 janela.geometry("425x420")
 janela.config(bg="#F0F8FF")
 janela.maxsize(width=425, height=400)
 janela.minsize(width=425, height=400)
 
+#15. Adiciona um rótulo.
 texto1 = Label(janela, text="Digite os dados para Cadastrar os clientes:", font=("Arial", 12), bg="#F0F8FF")
 texto1.grid(column=0, row=0, padx=10, pady=10, columnspan=2)
 
+#16. Esse código cria um rótulo Label.
 label_cpf = Label(janela, text='CPF:', font=("Arial", 10), bg="#F0F8FF")
 label_cpf.grid(row=1, column=0, padx=10, pady=5, sticky="w")
+
+#17. Cria um campo de entrada Entry para o CPF dentro de uma janela.
 entry_cpf = Entry(janela, width=35, font=("Arial", 10))
 entry_cpf.grid(row=1, column=1, padx=10, pady=5)
 
@@ -122,6 +149,7 @@ label_email.grid(row=6, column=0, padx=10, pady=5, sticky="w")
 entry_email = Entry(janela, width=35, font=("Arial", 10))
 entry_email.grid(row=6, column=1, padx=10, pady=5)
 
+#18. Adiciona um botão com comandos na janela.
 botaonovocliente = Button(janela, text="Novo Cliente", font=("Arial", 10), bg="#E6E6FA", fg="#000000", relief="raised", command=salvarcliente)
 botaonovocliente.grid(column=0, row=7, padx=10, pady=10)
 
@@ -134,4 +162,5 @@ botaoeditarclientes.grid(column=1, row=8, padx=10, pady=10)
 label_mensagem = Label(janela, text="", font=("Arial", 10, "bold"), bg="#F0F8FF", fg="green")
 label_mensagem.grid(column=0, row=9, columnspan=2, pady=10)
 
+#19. Executa o loop principal da janela fazendo a interação.
 janela.mainloop()
